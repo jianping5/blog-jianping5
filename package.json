@@ -1,0 +1,19 @@
+{
+  "name": "my-blog",
+  "version": "0.0.1",
+  "description": "我的个人博客网站",
+  "main": "index.js",
+  "authors": {
+    "name": "jianping5",
+    "email": "2712748478@qq.com"
+  },
+  "repository": "https://github.com/jianping5/my-blog/my-blog",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  }
+}
