@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>LRU | Blog Jianping5</title>
+    <meta name="generator" content="VuePress 1.9.9">
+    <link rel="icon" href="favicon.jpg">
+    <meta name="description" content="我的个人博客网站">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.1a8e0fbc.css" as="style"><link rel="preload" href="/assets/js/app.00b9d9a8.js" as="script"><link rel="preload" href="/assets/js/2.733019b2.js" as="script"><link rel="preload" href="/assets/js/9.7f868cef.js" as="script"><link rel="prefetch" href="/assets/js/10.2a222a01.js"><link rel="prefetch" href="/assets/js/11.78233bd9.js"><link rel="prefetch" href="/assets/js/12.67ff6154.js"><link rel="prefetch" href="/assets/js/3.64801815.js"><link rel="prefetch" href="/assets/js/4.d12742be.js"><link rel="prefetch" href="/assets/js/5.216cae74.js"><link rel="prefetch" href="/assets/js/6.2d0a63f8.js"><link rel="prefetch" href="/assets/js/7.c145f686.js"><link rel="prefetch" href="/assets/js/8.f807af7d.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.1a8e0fbc.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Blog Jianping5</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/archives/" class="nav-link router-link-active">
+  Archives
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  About
+</a></div><div class="nav-item"><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/archives/" class="nav-link router-link-active">
+  Archives
+</a></div><div class="nav-item"><a href="/about/" class="nav-link">
+  About
+</a></div><div class="nav-item"><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="lru"><a href="#lru" class="header-anchor">#</a> LRU</h1> <p>最近最少使用算法，主要用于内存淘汰上。比如操作系统、MySQL、Redis 中均有对 LRU 的实现，并为应对相应的问题做了优化。</p> <p>操作系统主要应对预读失效和缓存污染的问题。</p> <p>MySQL 也主要应对预读失效和缓存污染的问题。</p> <p>Redis 主要是应对内存使用的问题。</p> <hr> <p>java 实现 LRU 算法：</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">class</span> <span class="token class-name">LRUCache</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// 创建双向链表中的节点</span>
+    <span class="token keyword">class</span> <span class="token class-name">DLinkedNode</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> key<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> value<span class="token punctuation">;</span>
+        <span class="token class-name">DLinkedNode</span> next<span class="token punctuation">;</span>
+        <span class="token class-name">DLinkedNode</span> prev<span class="token punctuation">;</span>
+        <span class="token class-name">DLinkedNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token class-name">DLinkedNode</span><span class="token punctuation">(</span><span class="token keyword">int</span> key<span class="token punctuation">,</span> <span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>key <span class="token operator">=</span> key<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 维护一个 hash 表，key 为关键字，value 为节点</span>
+    <span class="token comment">// 通过缓存数据的键映射到其在双向链表中的位置</span>
+    <span class="token keyword">private</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">DLinkedNode</span><span class="token punctuation">&gt;</span></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token comment">// 创建伪节点：头节点和尾节点</span>
+    <span class="token class-name">DLinkedNode</span> head<span class="token punctuation">;</span>
+    <span class="token class-name">DLinkedNode</span> tail<span class="token punctuation">;</span>
+    
+    <span class="token comment">// 容量</span>
+    <span class="token keyword">int</span> capacity<span class="token punctuation">;</span>
+    
+    <span class="token comment">// 双向链表大小</span>
+    <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+
+    <span class="token comment">// LRUCache 类的构造函数</span>
+    <span class="token keyword">public</span> <span class="token class-name">LRUCache</span><span class="token punctuation">(</span><span class="token keyword">int</span> capacity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>capacity <span class="token operator">=</span> capacity<span class="token punctuation">;</span>
+        head <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DLinkedNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        tail <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DLinkedNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        head<span class="token punctuation">.</span>next <span class="token operator">=</span> tail<span class="token punctuation">;</span>
+        tail<span class="token punctuation">.</span>prev <span class="token operator">=</span> head<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">// 根据 key 值从缓存中获取对应节点，分两种情况：</span>
+    <span class="token comment">// 1. 若 key 不存在，则返回 -1</span>
+    <span class="token comment">// 2. 若 key 存在，则先将当前节点删除，然后再将当前节点移到双向链表的头部（表示最近访问的节点）</span>
+    <span class="token comment">// 返回该节点的值</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> key<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">DLinkedNode</span> node <span class="token operator">=</span> map<span class="token punctuation">.</span><span class="token function">getOrDefault</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>node <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">removeNode</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">moveToHead</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> node<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">// 添加 k-v 到缓存中，分两种情况</span>
+    <span class="token comment">// 1. 若 key 不存在，则创建新节点，并将该新节点添加到双向链表头部，size++</span>
+    <span class="token comment">// 判断当前 size 是否大于 capacity</span>
+    <span class="token comment">// 1.1 若大于，则移除双向链表尾部元素（即最近最不常访问的节点），size--</span>
+    <span class="token comment">// 1.2 若不大于，则不做操作</span>
+    <span class="token comment">// 2. 若 key 存在，则更新对应节点的 value，又由于当前访问了该节点</span>
+    <span class="token comment">// 所以需要将当前节点移到连双向链表头部（具体做法是：删除当前节点，再将当前节点添加到头部）</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">int</span> key<span class="token punctuation">,</span> <span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">DLinkedNode</span> node <span class="token operator">=</span> map<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>node <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">DLinkedNode</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DLinkedNode</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> newNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">moveToHead</span><span class="token punctuation">(</span>newNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            size<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">&gt;</span> capacity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">removeTail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                size<span class="token operator">--</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            node<span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
+            <span class="token function">removeNode</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">moveToHead</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 将指定节点添加到链表头部</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">moveToHead</span><span class="token punctuation">(</span><span class="token class-name">DLinkedNode</span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        node<span class="token punctuation">.</span>next <span class="token operator">=</span> head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        head<span class="token punctuation">.</span>next<span class="token punctuation">.</span>prev <span class="token operator">=</span> node<span class="token punctuation">;</span>
+        node<span class="token punctuation">.</span>prev <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        head<span class="token punctuation">.</span>next <span class="token operator">=</span> node<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 删除尾部节点，注意维护的哈希表中也需要删除对应节点</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">removeTail</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        map<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>tail<span class="token punctuation">.</span>prev<span class="token punctuation">.</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        tail<span class="token punctuation">.</span>prev<span class="token punctuation">.</span>prev<span class="token punctuation">.</span>next <span class="token operator">=</span> tail<span class="token punctuation">;</span>
+        tail<span class="token punctuation">.</span>prev <span class="token operator">=</span> tail<span class="token punctuation">.</span>prev<span class="token punctuation">.</span>prev<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 删除指定节点（用于删除该节点在被访问前所在的位置的节点）</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">removeNode</span><span class="token punctuation">(</span><span class="token class-name">DLinkedNode</span> node<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        node<span class="token punctuation">.</span>prev<span class="token punctuation">.</span>next <span class="token operator">=</span> node<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        node<span class="token punctuation">.</span>next<span class="token punctuation">.</span>prev <span class="token operator">=</span> node<span class="token punctuation">.</span>prev<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><hr> <p>Go 实现 LRU 算法：</p> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> lru
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;container/list&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token comment">// LRU cache. It is not safe for concurrent access.</span>
+<span class="token keyword">type</span> Cache <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	maxBytes 	<span class="token builtin">int64</span>
+	nbytes 		<span class="token builtin">int64</span>
+	ll			<span class="token operator">*</span>list<span class="token punctuation">.</span>List
+	cache		<span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">*</span>list<span class="token punctuation">.</span>Element
+	<span class="token comment">// optional and executed when an entry is purges</span>
+	OnEvicted <span class="token keyword">func</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">,</span> value Value<span class="token punctuation">)</span>		
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> entry <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	key		<span class="token builtin">string</span>
+	value	Value
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Value use Len to count how many bytes it takes</span>
+<span class="token keyword">type</span> Value <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+	<span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span>	<span class="token builtin">int</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// New is the Constructor of Cache</span>
+<span class="token keyword">func</span> <span class="token function">New</span><span class="token punctuation">(</span>maxBytes <span class="token builtin">int64</span><span class="token punctuation">,</span> onEvicted <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">,</span> Value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">*</span>Cache <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token operator">&amp;</span>Cache<span class="token punctuation">{</span>
+		maxBytes<span class="token punctuation">:</span> maxBytes<span class="token punctuation">,</span>
+		ll<span class="token punctuation">:</span> list<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+		cache<span class="token punctuation">:</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">*</span>list<span class="token punctuation">.</span>Element<span class="token punctuation">)</span><span class="token punctuation">,</span>
+		OnEvicted<span class="token punctuation">:</span> onEvicted<span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Get look ups a Key's value</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Cache<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>value Value<span class="token punctuation">,</span> ok <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> ele<span class="token punctuation">,</span> ok <span class="token operator">:=</span> c<span class="token punctuation">.</span>cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+		c<span class="token punctuation">.</span>ll<span class="token punctuation">.</span><span class="token function">MoveToFront</span><span class="token punctuation">(</span>ele<span class="token punctuation">)</span>
+		<span class="token comment">// 此处为泛型转换（Value 的类型为 any）</span>
+		kv <span class="token operator">:=</span> ele<span class="token punctuation">.</span>Value<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>entry<span class="token punctuation">)</span>
+		<span class="token keyword">return</span> kv<span class="token punctuation">.</span>value<span class="token punctuation">,</span> <span class="token boolean">true</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// RemoveOldest: removes the oldest item</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Cache<span class="token punctuation">)</span> <span class="token function">RemoveOldest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	ele <span class="token operator">:=</span> c<span class="token punctuation">.</span>ll<span class="token punctuation">.</span><span class="token function">Back</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> ele <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		c<span class="token punctuation">.</span>ll<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>ele<span class="token punctuation">)</span>
+		kv <span class="token operator">:=</span> ele<span class="token punctuation">.</span>Value<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>entry<span class="token punctuation">)</span>
+		<span class="token function">delete</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>cache<span class="token punctuation">,</span> kv<span class="token punctuation">.</span>key<span class="token punctuation">)</span>
+		c<span class="token punctuation">.</span>nbytes <span class="token operator">-=</span> <span class="token function">int64</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>kv<span class="token punctuation">.</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">int64</span><span class="token punctuation">(</span>kv<span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">if</span> c<span class="token punctuation">.</span>OnEvicted <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+			c<span class="token punctuation">.</span><span class="token function">OnEvicted</span><span class="token punctuation">(</span>kv<span class="token punctuation">.</span>key<span class="token punctuation">,</span> kv<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Add: adds a value to the cache</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Cache<span class="token punctuation">)</span> <span class="token function">Add</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">,</span> value Value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> ele<span class="token punctuation">,</span> ok <span class="token operator">:=</span> c<span class="token punctuation">.</span>cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+		c<span class="token punctuation">.</span>ll<span class="token punctuation">.</span><span class="token function">MoveToFront</span><span class="token punctuation">(</span>ele<span class="token punctuation">)</span>
+		kv <span class="token operator">:=</span> ele<span class="token punctuation">.</span>Value<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>entry<span class="token punctuation">)</span>
+		c<span class="token punctuation">.</span>nbytes <span class="token operator">+=</span> <span class="token function">int64</span><span class="token punctuation">(</span>value<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">int64</span><span class="token punctuation">(</span>kv<span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		kv<span class="token punctuation">.</span>value <span class="token operator">=</span> value
+	<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+		ele <span class="token operator">:=</span> c<span class="token punctuation">.</span>ll<span class="token punctuation">.</span><span class="token function">PushFront</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>entry<span class="token punctuation">{</span>key<span class="token punctuation">,</span> value<span class="token punctuation">}</span><span class="token punctuation">)</span>
+		c<span class="token punctuation">.</span>cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> ele
+		c<span class="token punctuation">.</span>nbytes <span class="token operator">+=</span> <span class="token function">int64</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">int64</span><span class="token punctuation">(</span>value<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">for</span> c<span class="token punctuation">.</span>maxBytes <span class="token operator">!=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> c<span class="token punctuation">.</span>maxBytes <span class="token operator">&lt;</span> c<span class="token punctuation">.</span>nbytes <span class="token punctuation">{</span>
+		c<span class="token punctuation">.</span><span class="token function">RemoveOldest</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.00b9d9a8.js" defer></script><script src="/assets/js/2.733019b2.js" defer></script><script src="/assets/js/9.7f868cef.js" defer></script>
+  </body>
+</html>
