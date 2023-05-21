@@ -2,16 +2,76 @@
 
 最近最少使用算法，主要用于内存淘汰上。比如操作系统、MySQL、Redis 中均有对 LRU 的实现，并为应对相应的问题做了优化。
 
-操作系统主要应对预读失效和缓存污染的问题。
+### Linux 操作系统和 MySQL 主要应对预读失效和缓存污染的问题
 
-MySQL 也主要应对预读失效和缓存污染的问题。
+#### 预读机制
 
-Redis 主要是应对内存使用的问题。
+1. Linux 操作系统为基于 Page Cache 的读缓存机制提供了预读机制，应用程序只想读取磁盘一个 page 的内容，出于空间局部性的原理，操作系统会额外读取三个 page 的内容到内存中。
+2. MySQL Innodb 存储引擎的 Buffer Pool 也有类似的预读机制，MySQL 从磁盘加载页时，会把它相邻的页也加载进来，目的是减少磁盘 I/O。
+
+**预读失效**：这些被提前加载进来的页，并没有被访问，相当于预读工作白做了。且不会被访问的预读页却占用了 LRU 链表前排的位置，而末尾淘汰的页，可能是热点数据，这样就大大降低了缓存命中率。 
+
+**如何避免**：让预读页停留在内存里的时间要尽可能的短，让真正被访问的页才移动到 LRU 链表的头部，将数据分为冷数据和热数据，分别进行 LRU 算法。
+
+**如何实现？**
+
+- Linux 操作系统实现了两个 LRU 链表：活跃 LRU 链表和非活跃 LRU 链表。
+- MySQL 的 Innodb 存储引擎在一个 LRU 链表上划分了两个区域，young 区域和 old 区域。
+
+
+
+#### 缓存污染
+在批量读取数据的时候，由于数据被访问了一次，这些大量数据都会被加入到活跃 LRU 链表（或 young 区域），而导致之前存在其中的热点数据被淘汰，且这些大量数据在很长一段时间内都不会被访问的话，那么就导致缓存被污染了。
+
+**问题**：导致大量热点数据被淘汰，当这些热点数据再次被访问时，缓存未命中，就会产生大量的磁盘 I/O，系统性能就会急剧下降。
+
+**如何避免**：提高进入到活跃 LRU 链表（或 young 区域）的门槛，就能有效地保证在其内的热点数据不会被轻易替换掉。
+
+**如何实现？**
+
+- Linux 操作系统，在内存页被访问第二次时，才将页从 inactive list 升级到 active list 里。
+- MySQL Innodb，在内存页被访问第二次时，要对停留在 old 区域里的时间进行判断。
+  - 若 Time(access second) - Time(access first) <= 1（默认值），该页就不会升级。
+  - 若 Time(access second) - Time(access first) > 1，那么该页就会从 old 转为 young。
+
+
+
+### Redis 主要应对内存占用的问题
+
+Redis 实现一种**近似 LRU 算法**，具体是在 Redis 的对象结构体中添加一个字段，用来记录此数据的最后一次访问时间。
+
+当 Redis 进行内存淘汰时，会使用随机采样的方式来淘汰数据，随机选取 5 个值（可配置），然后淘汰最久未使用的那个。
+
+为了解决缓存污染的问题，Redis 还实现了 LFU 算法，相比 LRU 算法，多记录了**数据的访问频次**的信息。
+
+Redis 对象结构中添加了 24 bits 的 lru 字段，用来记录对象的访问信息，LFU 算法中，高 16bit 存储 ldt(Last Decrement Time)，低 8bit 存储 logc(Logistic Counter)。
+
+::: tip
+- ldt: 记录 key 的访问时间戳
+- logc: 记录 key 的访问频次，它的值越小表示使用频率越低，越容易淘汰。
+:::
+
+
+
+### LRU-K
+
+LRU-K 算法多维护了一个队列，用来记录所有缓存数据被访问的历史（可以按照 FIFO、LRU、LFU 算法进行淘汰），只有当数据访问的次数达到 K 时，才将数据放入真正的缓存队列。（通常是 LRU-2）
+
+
+
+Two-queues 算法，LRU-2 的一个具体实现，历史队列为 FIFO 队列，缓存队列为 LRU 队列。
+
+1. 数据第一次访问，放入 FIFO 队列中
+2. 若 FIFO 队列已满，则淘汰队头元素
+3. 若 FIFO 队列中的元素被再次访问，则将其从 FIFO 队列中移除，添加到缓存队列队头
+4. 若缓存队列中的元素被再次访问，则将其添加到队头
+5. 若 LRU 队列已满，则淘汰队尾元素（最久未访问元素）
+
 
 
 ---
 
-java 实现 LRU 算法：
+### java 实现 LRU 算法
 
 ```java
 class LRUCache {
@@ -117,102 +177,85 @@ class LRUCache {
 
 ---
 
-Go 实现 LRU 算法：
+### Go 实现 LRU 算法
 
 ```Go
 package lru
 
 import (
-	"container/list"
+    "container/list"
 )
 
 // LRU cache. It is not safe for concurrent access.
 type Cache struct {
-	maxBytes 	int64
-	nbytes 		int64
-	ll			*list.List
-	cache		map[string]*list.Element
-	// optional and executed when an entry is purges
-	OnEvicted func(key string, value Value)		
+    maxBytes    int64
+    nbytes      int64
+    ll          *list.List
+    cache       map[string]*list.Element
+    // optional and executed when an entry is purges
+    OnEvicted func(key string, value Value)     
 }
 
 type entry struct {
-	key		string
-	value	Value
+    key     string
+    value   Value
 }
 
 // Value use Len to count how many bytes it takes
 type Value interface {
-	Len()	int
+    Len()   int
 }
 
 // New is the Constructor of Cache
 func New(maxBytes int64, onEvicted func(string, Value)) *Cache {
-	return &Cache{
-		maxBytes: maxBytes,
-		ll: list.New(),
-		cache: make(map[string]*list.Element),
-		OnEvicted: onEvicted,
-	}
+    return &Cache{
+        maxBytes: maxBytes,
+        ll: list.New(),
+        cache: make(map[string]*list.Element),
+        OnEvicted: onEvicted,
+    }
 }
 
 // Get look ups a Key's value
 func (c *Cache) Get(key string) (value Value, ok bool) {
-	if ele, ok := c.cache[key]; ok {
-		c.ll.MoveToFront(ele)
-		// 此处为泛型转换（Value 的类型为 any）
-		kv := ele.Value.(*entry)
-		return kv.value, true
-	}
-	return
+    if ele, ok := c.cache[key]; ok {
+        c.ll.MoveToFront(ele)
+        // 此处为泛型转换（Value 的类型为 any）
+        kv := ele.Value.(*entry)
+        return kv.value, true
+    }
+    return
 }
 
 // RemoveOldest: removes the oldest item
 func (c *Cache) RemoveOldest() {
-	ele := c.ll.Back()
-	if ele != nil {
-		c.ll.Remove(ele)
-		kv := ele.Value.(*entry)
-		delete(c.cache, kv.key)
-		c.nbytes -= int64(len(kv.key)) + int64(kv.value.Len())
-		if c.OnEvicted != nil {
-			c.OnEvicted(kv.key, kv.value)
-		}
-	}
+    ele := c.ll.Back()
+    if ele != nil {
+        c.ll.Remove(ele)
+        kv := ele.Value.(*entry)
+        delete(c.cache, kv.key)
+        c.nbytes -= int64(len(kv.key)) + int64(kv.value.Len())
+        if c.OnEvicted != nil {
+            c.OnEvicted(kv.key, kv.value)
+        }
+    }
 }
 
 // Add: adds a value to the cache
 func (c *Cache) Add(key string, value Value) {
-	if ele, ok := c.cache[key]; ok {
-		c.ll.MoveToFront(ele)
-		kv := ele.Value.(*entry)
-		c.nbytes += int64(value.Len()) - int64(kv.value.Len())
-		kv.value = value
-	} else {
-		ele := c.ll.PushFront(&entry{key, value})
-		c.cache[key] = ele
-		c.nbytes += int64(len(key)) + int64(value.Len())
-	}
-	
-	for c.maxBytes != 0 && c.maxBytes < c.nbytes {
-		c.RemoveOldest()
-	}
+    if ele, ok := c.cache[key]; ok {
+        c.ll.MoveToFront(ele)
+        kv := ele.Value.(*entry)
+        c.nbytes += int64(value.Len()) - int64(kv.value.Len())
+        kv.value = value
+    } else {
+        ele := c.ll.PushFront(&entry{key, value})
+        c.cache[key] = ele
+        c.nbytes += int64(len(key)) + int64(value.Len())
+    }
+    
+    for c.maxBytes != 0 && c.maxBytes < c.nbytes {
+        c.RemoveOldest()
+    }
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
