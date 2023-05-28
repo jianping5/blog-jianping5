@@ -1,5 +1,9 @@
-# GFS
-<font size=3 color=gray>Posted on May 11, 2023 (60 min. read)</font>
+---
+title: GFS
+date: 2023-05-11
+author: jianping5
+location: ShangHai 
+---
 
 ## Design Overview
 ### Architecture

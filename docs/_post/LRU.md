@@ -1,4 +1,9 @@
-# LRU
+---
+title: LRU
+date: 2023-05-19
+author: jianping5
+location: ShangHai 
+---
 
 最近最少使用算法，主要用于内存淘汰上。比如操作系统、MySQL、Redis 中均有对 LRU 的实现，并为应对相应的问题做了优化。
 
@@ -59,7 +64,7 @@ LRU-K 算法多维护了一个队列，用来记录所有缓存数据被访问�
 
 
 
-Two-queues 算法，LRU-2 的一个具体实现，历史队列为 FIFO 队列，缓存队列为 LRU 队列。
+Two-queues 算法，类似于 LRU-2，只不过有两条缓存队列（FIFO 队列和 LRU 队列）
 
 1. 数据第一次访问，放入 FIFO 队列中
 2. 若 FIFO 队列已满，则淘汰队头元素
