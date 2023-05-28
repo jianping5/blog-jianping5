@@ -51,11 +51,8 @@ Redis 实现一种**近似 LRU 算法**，具体是在 Redis 的对象结构体�
 
 Redis 对象结构中添加了 24 bits 的 lru 字段，用来记录对象的访问信息，LFU 算法中，高 16bit 存储 ldt(Last Decrement Time)，低 8bit 存储 logc(Logistic Counter)。
 
-::: tip
-- ldt: 记录 key 的访问时间戳
-- logc: 记录 key 的访问频次，它的值越小表示使用频率越低，越容易淘汰。
-:::
-
+> - ldt: 记录 key 的访问时间戳\
+> - logc: 记录 key 的访问频次，它的值越小表示使用频率越低，越容易淘汰。
 
 
 ### LRU-K
