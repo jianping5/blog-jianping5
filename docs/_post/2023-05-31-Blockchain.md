@@ -5,8 +5,6 @@ author: jianping5
 location: ShangHai 
 ---
 
-## 区块链与货币
-
 https://www.youtube.com/@mitocw
 
 ### Introduction
@@ -155,7 +153,7 @@ Hash functions are a way to compress a lot of data, have a fingerprint, make sur
 
 
 
-![7c049475-904d-4fdc-8250-6ccafedccfe9](https://jp-typora-1310703557.cos.ap-shanghai.myqcloud.com/blog/7c049475-904d-4fdc-8250-6ccafedccfe9.png)
+![1.png](../.vuepress/public/img/2023-05-31-Blockchain/1.png)
 
 **Block Header**
 
@@ -252,13 +250,13 @@ Examples: the New York Times crossword puzzle   Data commitment
 
 **Merkle Tree - Binary Data Tree with Hashes**
 
-![b04eeb5a-c84e-488b-94f6-6f55b240f056](https://jp-typora-1310703557.cos.ap-shanghai.myqcloud.com/blog/b04eeb5a-c84e-488b-94f6-6f55b240f056.png)
+![2.png](../.vuepress/public/img/2023-05-31-Blockchain/2.png)
 
 > 为了能在区块头体现该区块所有的交易信息，将交易信息使用 Merkle Tree 算法，生成 Merkle Root Hash，并以此作为交易列表的摘要存到区块头中
 
 **Asymmetric Cryptography & Digital Signatures**
 
-![288a3cb9-4b9d-4b1f-87ab-eeba4b055f6f](https://jp-typora-1310703557.cos.ap-shanghai.myqcloud.com/blog/288a3cb9-4b9d-4b1f-87ab-eeba4b055f6f.png)
+![3.png](../.vuepress/public/img/2023-05-31-Blockchain/3.png)
 
 Q: Why should we hash out the original data before encryption?
 
@@ -299,7 +297,7 @@ Proposed to address E-mail Spam and Denial of Service attacks
 
 **Blockchain - Proof of Work**
 
-![afbade39-aeff-4228-82af-e710b8163fa9](https://jp-typora-1310703557.cos.ap-shanghai.myqcloud.com/blog/afbade39-aeff-4228-82af-e710b8163fa9.png)
+![4.png](../.vuepress/public/img/2023-05-31-Blockchain/4.png)
 
 > 工作量证明：矿工通过 Merkle Tree 算法结合交易列表计算出 Merkle Root Hash，作为输入值部分，区块头还包括 Hash of previous block 以及 timestamp 也将作为输入值，然后矿工通过穷举 nonce 值，使用 SHA256 算法进行哈希运算，将哈希值与目标值进行比较，若小于目标哈希值，则验证通过，就会将区块信息进行广播，让其他节点验证，验证通过才能加入主链中
 >
@@ -410,7 +408,7 @@ Bitcoin transaction outputs that have not been spent at a given time
 
 sed for Transactions
 
-![8a04efc3-c5b7-4154-a9a8-457a23fa5cad](https://jp-typora-1310703557.cos.ap-shanghai.myqcloud.com/blog/8a04efc3-c5b7-4154-a9a8-457a23fa5cad.png)
+![5.png](../.vuepress/public/img/2023-05-31-Blockchain/5.png)
 
 **Bitcoin —— Technical features**
 

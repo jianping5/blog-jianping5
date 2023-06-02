@@ -13,7 +13,7 @@ The major contributions of this work are a simple and powerful interface that en
 
 ## Programming Model
 
-![img](https://jp-typora-1310703557.cos.ap-shanghai.myqcloud.com/blog/asynccode)
+![1.png](../.vuepress/public/img/2023-05-28-MapReduce/1.png)
 
 ## Implementation
 
