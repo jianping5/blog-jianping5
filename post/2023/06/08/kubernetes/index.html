@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Kubernetes | Jianping5</title>
+    <meta name="generator" content="VuePress 1.9.9">
+    <link rel="icon" href="favicon.jpg">
+    <meta name="description" content="官方文档：https://kubernetes.io/docs/home/
+&gt;
+&gt; 入门视频：https://www.youtube.com/watch?v=s_o8dwzRlu4
+
+Open source container orchestration tool
+
+Helps manage containerized applications in different deployment ...">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.f8fe1092.css" as="style"><link rel="preload" href="/assets/js/app.9b939cf9.js" as="script"><link rel="preload" href="/assets/js/7.88fc818a.js" as="script"><link rel="preload" href="/assets/js/3.1eee002c.js" as="script"><link rel="preload" href="/assets/js/12.52d5e8a8.js" as="script"><link rel="prefetch" href="/assets/js/10.9d420c0d.js"><link rel="prefetch" href="/assets/js/11.b42294c3.js"><link rel="prefetch" href="/assets/js/13.4170fdfa.js"><link rel="prefetch" href="/assets/js/14.364103c0.js"><link rel="prefetch" href="/assets/js/15.6f2fbfc0.js"><link rel="prefetch" href="/assets/js/16.1a00f02c.js"><link rel="prefetch" href="/assets/js/17.a029641d.js"><link rel="prefetch" href="/assets/js/18.e660c193.js"><link rel="prefetch" href="/assets/js/19.c2e5733e.js"><link rel="prefetch" href="/assets/js/4.ef75d550.js"><link rel="prefetch" href="/assets/js/5.319e6a2e.js"><link rel="prefetch" href="/assets/js/6.cf0169a8.js"><link rel="prefetch" href="/assets/js/8.efbbe776.js"><link rel="prefetch" href="/assets/js/9.e7309807.js"><link rel="prefetch" href="/assets/js/vuejs-paginate.2c0a3311.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.f8fe1092.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/" class="nav-link home-link">Jianping5 </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/post/" class="nav-link router-link-active">Blog</a></li><li class="nav-item"><a href="/about/" class="nav-link">About</a></li><li class="nav-item"><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external">Github</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/" class="nav-link mobile-home-link">Jianping5 </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/post/" class="nav-link router-link-active">Blog</a></li><li class="mobile-nav-item"><a href="/about/" class="nav-link">About</a></li><li class="mobile-nav-item"><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external">Github</a></li> <li class="mobile-nav-item"><!----></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        Kubernetes
+      </h1> <div class="post-meta"><div itemprop="publisher author" itemtype="http://schema.org/Person" itemscope="itemscope" class="post-meta-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-navigation"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <span itemprop="name">jianping5</span> <span itemprop="address">   in ShangHai</span></div> <div class="post-meta-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <time pubdate itemprop="datePublished" datetime="2023-06-08T00:00:00.000Z">
+      Thu Jun 08 2023
+    </time></div> <!----></div></header> <div itemprop="articleBody" class="content__default"><blockquote><p>官方文档：https://kubernetes.io/docs/home/</p> <p>入门视频：https://www.youtube.com/watch?v=s_o8dwzRlu4</p></blockquote> <p>Open source container orchestration tool</p> <p>Helps manage containerized applications in different deployment environments</p> <p><strong>Why do we need it?</strong></p> <ul><li>Trend from Monolith to Microservices</li> <li>Increased usage of containers</li> <li>Demand for a proper way of managing those hundreds of containers</li></ul> <p><strong>What features do orchestration tools offer?</strong></p> <ul><li>High Availability or no downtime</li> <li>Scalability or high performance</li> <li>Disaster recovery - backup and restore</li></ul> <p><strong>Control Plane</strong></p> <ul><li>API Server = Entrypoint to K8s cluster</li> <li>Controller Manager = keeps track of what's happening in the clus</li> <li>Scheduler = ensures Pods placement</li> <li>etcd = Kubernetes backing store</li></ul> <p>Virtual Network = Creates one unified machine</p> <p><strong>Control Plane Nodes</strong></p> <ul><li>Handful of master processes</li> <li>Much more important</li></ul> <p><strong>Worker Nodes</strong></p> <ul><li>Higher workload</li> <li>Much bigger and more resources</li></ul> <h3 id="main-kubernetes-components"><a href="#main-kubernetes-components" class="header-anchor">#</a> Main Kubernetes Components</h3> <p>Pod - abstraction of containers</p> <p>Service - communication</p> <p>Ingress - route traffic into cluster</p> <p>ConfigMap &amp; Secret - external configuration</p> <p>Volume - data persistence</p> <p>Deployment &amp; StatefulSet - replication</p> <p><strong>Pod</strong>（runs on Node）</p> <blockquote><p>可以在 Kubernetes 中创建和管理的、最小的可部署的计算单元</p></blockquote> <ul><li>Smallest unit in Kubernetes</li> <li>Abstraction over container</li> <li>Usually 1 Application per Pod</li> <li>Each Pod gets its own IP address</li> <li><strong>New</strong> IP address on re-creation</li></ul> <p><strong>Service</strong></p> <blockquote><p>Even if the pod dies, the service and its ip address will stay</p></blockquote> <ul><li><strong>Permanent</strong> IP address</li> <li>Lifecycle of Pod and Service not connected</li></ul> <p>You specify the type of Service on creation</p> <p>Internal Service is the default type.</p> <p>The request goes first to <strong>ingress</strong> and it does the forwarding then to the service</p> <p><img src="/assets/img/1.107d9cda.png" alt="1.png"></p> <p><strong>ConfigMap &amp; Secret</strong></p> <p>ConfigMap: External Configuration of your application</p> <p>Secret: used to store secret data   reference secret in deployment/Pod</p> <p><strong>Volume</strong></p> <ul><li>Storage on local machine</li> <li>Or remote, outside of the K8s cluster</li></ul> <p>Kubernetes doesn't manage data persistence！</p> <p><strong>Deployment &amp; StatefulSet</strong></p> <p>Deployment = for stateLESS Apps</p> <p>StatefulSet = for stateFUL Apps or Databases</p> <blockquote><p>Deploying StatefulSet is not easy</p> <p>DB is often hosted outside of Kubernetes cluster</p> <p>容器崩溃后重启会导致数据丢失，所以需要将数据挂载到文件系统中</p></blockquote> <h3 id="kubernetes-configuration"><a href="#kubernetes-configuration" class="header-anchor">#</a> Kubernetes Configuration</h3> <p>3 Parts of Configuration file</p> <ol><li>Metadata</li> <li>Specification</li> <li>Status (automatically generated and added by Kubernetes)</li></ol> <p>Where does K8s get this status data?</p> <p>Etcd holds the current status of any K8s component</p> <h3 id="minikube-kubectl-local-setup"><a href="#minikube-kubectl-local-setup" class="header-anchor">#</a> Minikube &amp; kubectl - Local Setup</h3> <blockquote><p>https://minikube.sigs.k8s.io/docs/start/</p></blockquote> <p>Minikube is local Kubernetes, focusing on making it easy to learn and develop for Kubernetes.</p> <p>Multiple Master and Worker nodes</p> <p>Separate virtual or physical machines</p> <ol><li>Minukube runs as Docker container</li> <li>Docker inside Minikube to run our application containers</li></ol> <p>Minikube has kuberctl as dependency</p> <p>Minikube CLI  - for start up/deleting the cluster</p> <p>Kubectl CLI - for configuring the Minikube cluster</p> <h3 id="demo-project"><a href="#demo-project" class="header-anchor">#</a> Demo Project</h3> <p><strong>README.md</strong></p> <p>K8s manifest files</p> <ul><li>mongo-config.yaml</li> <li>mongo-secret.yaml</li> <li>mongo.yaml</li> <li>webapp.yaml</li></ul> <p>K8s commands</p> <p>start Minikube and check status</p> <div class="language-Plain extra-class"><pre class="language-plain"><code>minikube start --vm-driver=hyperkit minikube status
+</code></pre></div><p>get minikube node's ip address</p> <div class="language-Plain extra-class"><pre class="language-plain"><code>minikube ip
+</code></pre></div><p>get basic info about k8s components</p> <div class="language-Plain extra-class"><pre class="language-plain"><code>kubectl get nodekubectl get podkubectl get svckubectl get all
+</code></pre></div><p>get extended info about components</p> <div class="language-Plain extra-class"><pre class="language-plain"><code>kubectl get pod -o widekubectl get node -o wide
+</code></pre></div><p>get detailed info about a specific component</p> <div class="language-Plain extra-class"><pre class="language-plain"><code>kubectl describe svc {svc-name}kubectl describe pod {pod-name}
+</code></pre></div><p>get application logs</p> <div class="language-Plain extra-class"><pre class="language-plain"><code>kubectl logs {pod-name}
+</code></pre></div><p>stop your Minikube cluster</p> <div class="language-Plain extra-class"><pre class="language-plain"><code>minikube stop
+</code></pre></div><blockquote><p>⚠ <strong>Known issue - Minikube IP not accessible</strong></p></blockquote> <p>If you can't access the NodePort service webapp with <code>MinikubeIP:NodePort</code>, execute the following command:</p> <div class="language-Plain extra-class"><pre class="language-plain"><code>minikube service webapp-service
+</code></pre></div><p>Links</p> <ul><li>mongodb image on Docker Hub: https://hub.docker.com/_/mongo</li> <li>webapp image on Docker Hub: https://hub.docker.com/repository/docker/nanajanashia/k8s-demo-app</li> <li>k8s official documentation: https://kubernetes.io/docs/home/</li> <li>webapp code repo: https://gitlab.com/nanuchi/developing-with-docker/-/tree/feature/k8s-in-hour</li></ul> <p><strong>mongo-config.yaml</strong></p> <div class="language-YAML extra-class"><pre class="language-yaml"><code><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> ConfigMap
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>config
+<span class="token key atrule">data</span><span class="token punctuation">:</span>
+  <span class="token key atrule">mongo-url</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>service
+</code></pre></div><p><strong>mongo-secret.yaml</strong></p> <div class="language-YAML extra-class"><pre class="language-yaml"><code><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Secret
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>secret
+<span class="token key atrule">type</span><span class="token punctuation">:</span> Opaque
+<span class="token key atrule">data</span><span class="token punctuation">:</span>
+  <span class="token key atrule">mongo-user</span><span class="token punctuation">:</span> bW9uZ291c2Vy
+  <span class="token key atrule">mongo-password</span><span class="token punctuation">:</span> bW9uZ29wYXNzd29yZA==
+</code></pre></div><p><strong>mongo.yaml</strong></p> <div class="language-YAML extra-class"><pre class="language-yaml"><code><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>deployment
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> mongo
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token comment"># Connecting Deployment to all Pod replicas</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> mongo
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> mongo
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> mongodb
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> mongo<span class="token punctuation">:</span><span class="token number">5.0</span>
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">27017</span>
+        <span class="token key atrule">env</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MONGO_INITDB_ROOT_USERNAME
+          <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span>
+            <span class="token key atrule">secretKeyRef</span><span class="token punctuation">:</span>
+              <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>secret
+              <span class="token key atrule">key</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>user
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> MONGO_INITDB_ROOT_PASSWORD
+          <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span>
+            <span class="token key atrule">secretKeyRef</span><span class="token punctuation">:</span>
+              <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>secret
+              <span class="token key atrule">key</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>password  
+<span class="token punctuation">---</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>service
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+<span class="token comment"># select pods to forward the requests to (Connecting Service to Pods)</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> mongo
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP
+      <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">27017</span>
+      <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <span class="token number">27017</span>
+</code></pre></div><p><strong>webapp.yaml</strong></p> <div class="language-YAML extra-class"><pre class="language-yaml"><code><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> webapp<span class="token punctuation">-</span>deployment
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> webapp
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> webapp
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> webapp
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> webapp
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> nanajanashia/k8s<span class="token punctuation">-</span>demo<span class="token punctuation">-</span>app<span class="token punctuation">:</span>v1.0
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">3000</span>
+        <span class="token key atrule">env</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> USER_NAME
+          <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span>
+            <span class="token key atrule">secretKeyRef</span><span class="token punctuation">:</span>
+              <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>secret
+              <span class="token key atrule">key</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>user
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> USER_PWD
+          <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span>
+            <span class="token key atrule">secretKeyRef</span><span class="token punctuation">:</span>
+              <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>secret
+              <span class="token key atrule">key</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>password 
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> DB_URL
+          <span class="token key atrule">valueFrom</span><span class="token punctuation">:</span>
+            <span class="token key atrule">configMapKeyRef</span><span class="token punctuation">:</span>
+              <span class="token key atrule">name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>config
+              <span class="token key atrule">key</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>url
+<span class="token punctuation">---</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> webapp<span class="token punctuation">-</span>service
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+<span class="token comment"># esposes the Service on each Node's IP at a static port (30000 - 32767)</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> NodePort
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> webapp
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP
+      <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">3000</span>
+      <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <span class="token number">3000</span>
+      <span class="token key atrule">nodePort</span><span class="token punctuation">:</span> <span class="token number">30100</span>
+</code></pre></div><blockquote><p>Exposes the Service on each Node's IP at a static port (the <code>NodePort</code>). To make the node port available, Kubernetes sets up a cluster IP address, the same as if you had requested a Service of <code>type: ClusterIP</code></p></blockquote></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h3 active"><a href="#main-kubernetes-components" title="Main Kubernetes Components">Main Kubernetes Components</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#kubernetes-configuration" title="Kubernetes Configuration">Kubernetes Configuration</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#minikube-kubectl-local-setup" title="Minikube &amp; kubectl - Local Setup">Minikube &amp; kubectl - Local Setup</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#demo-project" title="Demo Project">Demo Project</a></div></div></div></div> <footer class="footer" data-v-3d9deeb8><div class="footer-left-wrap" data-v-3d9deeb8><ul class="contact" data-v-3d9deeb8><li class="contact-item" data-v-3d9deeb8><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-3d9deeb8><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-3d9deeb8></path></svg>
+          
+        </a></li><li class="contact-item" data-v-3d9deeb8><a href="mailto:jianping756@gmail.com" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail" data-v-3d9deeb8><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" data-v-3d9deeb8></path><polyline points="22,6 12,13 2,6" data-v-3d9deeb8></polyline></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-3d9deeb8><ul class="copyright" data-v-3d9deeb8><li class="copyright-item" data-v-3d9deeb8>jianping5 © 2019</li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.9b939cf9.js" defer></script><script src="/assets/js/7.88fc818a.js" defer></script><script src="/assets/js/3.1eee002c.js" defer></script><script src="/assets/js/12.52d5e8a8.js" defer></script>
+  </body>
+</html>
