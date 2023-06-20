@@ -23,6 +23,14 @@ module.exports = {
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
     ['link', { rel: 'icon', href: 'favicon.jpg'}]
   ],
+  plugins: [
+    [
+      "@vuepress/google-analytics",
+      {
+        ga: process.env.GA
+      }
+    ]
+  ],
 
   /**
    * Theme configuration, here is the default theme configuration for VuePress.
@@ -31,6 +39,9 @@ module.exports = {
    */
   themeConfig: {
     lastUpdated: 'Last Updated', // string | boolean
+    globalPagination: {
+      lengthPerPage:'7', // Maximum number of posts per page.
+    },
     directories: [
       {
         id: "post",
@@ -48,7 +59,7 @@ module.exports = {
       }
     ],
     sitemap: {
-      hostname: "http://localhost:8080/"
+      hostname: "https://jianping5.github.io/"
     },
     // comment: {
     //   service: "vssue",
@@ -94,7 +105,7 @@ module.exports = {
       ],
       copyright: [
         {
-          text: "jianping5 © 2019",
+          text: "jianping5 © 2023",
           link: ""
         }
       ]
