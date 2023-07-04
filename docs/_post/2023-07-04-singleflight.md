@@ -109,3 +109,29 @@ func (g *flightGroup) makeCall(c *call, key string, fn func() (any, error)) {
         c.val, c.err = fn()
 }
 ```
+
+## 应用方式
+```Go
+func main() {
+	round := 10
+	var wg sync.WaitGroup
+	barrier := singleflight.NewSingleFlight()
+	wg.Add(round)
+	for i := 0; i < round; i++ {
+		go func() {
+			defer wg.Done()
+			// 启用10个协程模拟获取缓存操作
+			val, err := barrier.Do("get_rand_int", func() (interface{}, error) {
+				time.Sleep(time.Second)
+				return rand.Int(), nil
+			})
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println(val)
+			}
+		}()
+	}
+	wg.Wait()
+}
+```
