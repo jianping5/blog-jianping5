@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>小根堆 &amp; 大根堆 | Jianping5</title>
+    <meta name="generator" content="VuePress 1.9.9">
+    <link rel="icon" href="favicon.jpg">
+    <meta name="description" content="
+
+Go 实现的小根堆保证每个节点都是它的子树中的较小值（优先级较高），且根节点为最小值（优先级最高）
+
+down() 函数主要是将值大的（优先级低的）节点下沉
+
+up() 函数主要是将值小的（优先级高的）节点上浮
+
+数据保存在 h 数组中，利用 h 维护一棵树，将 h 可视化可以发现每个节点都是它的子节点中的最小值
+
+Fix() 函数：当 h 中某个索引下的值被修改后，需要将其进行相应的 ...">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.1d43d066.css" as="style"><link rel="preload" href="/assets/js/app.5f1c1608.js" as="script"><link rel="preload" href="/assets/js/7.095168a6.js" as="script"><link rel="preload" href="/assets/js/3.5695e672.js" as="script"><link rel="preload" href="/assets/js/22.42c8ece6.js" as="script"><link rel="prefetch" href="/assets/js/10.2df2f488.js"><link rel="prefetch" href="/assets/js/11.b408beb5.js"><link rel="prefetch" href="/assets/js/12.6cdaaa90.js"><link rel="prefetch" href="/assets/js/13.196d23b8.js"><link rel="prefetch" href="/assets/js/14.65c5c5f0.js"><link rel="prefetch" href="/assets/js/15.609769d2.js"><link rel="prefetch" href="/assets/js/16.6855a45b.js"><link rel="prefetch" href="/assets/js/17.2afda71f.js"><link rel="prefetch" href="/assets/js/18.66524d53.js"><link rel="prefetch" href="/assets/js/19.a665d640.js"><link rel="prefetch" href="/assets/js/20.afc77843.js"><link rel="prefetch" href="/assets/js/21.cd24cdbb.js"><link rel="prefetch" href="/assets/js/4.111f6883.js"><link rel="prefetch" href="/assets/js/5.6b1dfe39.js"><link rel="prefetch" href="/assets/js/6.fcbd1a3f.js"><link rel="prefetch" href="/assets/js/8.b2a0309d.js"><link rel="prefetch" href="/assets/js/9.d6c89be3.js"><link rel="prefetch" href="/assets/js/vuejs-paginate.0df4708d.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.1d43d066.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/" class="nav-link home-link">Jianping5 </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/post/" class="nav-link router-link-active">Blog</a></li><li class="nav-item"><a href="/about/" class="nav-link">About</a></li><li class="nav-item"><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external">Github</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/" class="nav-link mobile-home-link">Jianping5 </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/post/" class="nav-link router-link-active">Blog</a></li><li class="mobile-nav-item"><a href="/about/" class="nav-link">About</a></li><li class="mobile-nav-item"><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external">Github</a></li> <li class="mobile-nav-item"><!----></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        小根堆 &amp; 大根堆
+      </h1> <div class="post-meta"><div itemprop="publisher author" itemtype="http://schema.org/Person" itemscope="itemscope" class="post-meta-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-navigation"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <span itemprop="name">jianping5</span> <span itemprop="address">   in ShangHai</span></div> <div class="post-meta-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <time pubdate itemprop="datePublished" datetime="2023-07-06T00:00:00.000Z">
+      Thu Jul 06 2023
+    </time></div> <!----></div></header> <div itemprop="articleBody" class="content__default"><h2 id="简介"><a href="#简介" class="header-anchor">#</a> 简介</h2> <p>Go 实现的<strong>小根堆</strong>保证每个节点都是它的子树中的较小值（优先级较高），且根节点为最小值（优先级最高）</p> <p>down() 函数主要是将值大的（优先级低的）节点下沉</p> <p>up() 函数主要是将值小的（优先级高的）节点上浮</p> <p>数据保存在 h 数组中，利用 h 维护一棵树，将 h 可视化可以发现每个节点都是它的子节点中的最小值</p> <p>Fix() 函数：当 h 中某个索引下的值被修改后，需要将其进行相应的移动。</p> <p>Remove() 函数：删除指定索引的值，并对树做调整</p> <h2 id="源码"><a href="#源码" class="header-anchor">#</a> 源码</h2> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token comment">// Copyright 2009 The Go Authors. All rights reserved.</span>
+<span class="token comment">// Use of this source code is governed by a BSD-style</span>
+<span class="token comment">// license that can be found in the LICENSE file.</span>
+
+<span class="token comment">// Package heap provides heap operations for any type that implements</span>
+<span class="token comment">// heap.Interface. A heap is a tree with the property that each node is the</span>
+<span class="token comment">// minimum-valued node in its subtree.</span>
+<span class="token comment">//</span>
+<span class="token comment">// The minimum element in the tree is the root, at index 0.</span>
+<span class="token comment">//</span>
+<span class="token comment">// A heap is a common way to implement a priority queue. To build a priority</span>
+<span class="token comment">// queue, implement the Heap interface with the (negative) priority as the</span>
+<span class="token comment">// ordering for the Less method, so Push adds items while Pop removes the</span>
+<span class="token comment">// highest-priority item from the queue. The Examples include such an</span>
+<span class="token comment">// implementation; the file example_pq_test.go has the complete source.</span>
+<span class="token keyword">package</span> heap
+
+<span class="token keyword">import</span> <span class="token string">&quot;sort&quot;</span>
+
+<span class="token comment">// The Interface type describes the requirements</span>
+<span class="token comment">// for a type using the routines in this package.</span>
+<span class="token comment">// Any type that implements it may be used as a</span>
+<span class="token comment">// min-heap with the following invariants (established after</span>
+<span class="token comment">// Init has been called or if the data is empty or sorted):</span>
+<span class="token comment">//</span>
+<span class="token comment">//  !h.Less(j, i) for 0 &lt;= i &lt; h.Len() and 2*i+1 &lt;= j &lt;= 2*i+2 and j &lt; h.Len()</span>
+<span class="token comment">//</span>
+<span class="token comment">// Note that Push and Pop in this interface are for package heap's</span>
+<span class="token comment">// implementation to call. To add and remove things from the heap,</span>
+<span class="token comment">// use heap.Push and heap.Pop.</span>
+<span class="token keyword">type</span> Interface <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+    sort<span class="token punctuation">.</span>Interface
+    <span class="token function">Push</span><span class="token punctuation">(</span>x any<span class="token punctuation">)</span> <span class="token comment">// add x as element Len()</span>
+    <span class="token function">Pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> any   <span class="token comment">// remove and return element Len() - 1.</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Init establishes the heap invariants required by the other routines in this package.</span>
+<span class="token comment">// Init is idempotent with respect to the heap invariants</span>
+<span class="token comment">// and may be called whenever the heap invariants may have been invalidated.</span>
+<span class="token comment">// The complexity is O(n) where n = h.Len().</span>
+<span class="token keyword">func</span> <span class="token function">Init</span><span class="token punctuation">(</span>h Interface<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// heapify</span>
+    n <span class="token operator">:=</span> h<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> n<span class="token operator">/</span><span class="token number">2</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span> <span class="token punctuation">{</span>
+        <span class="token function">down</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> i<span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Push pushes the element x onto the heap.</span>
+<span class="token comment">// The complexity is O(log n) where n = h.Len().</span>
+<span class="token keyword">func</span> <span class="token function">Push</span><span class="token punctuation">(</span>h Interface<span class="token punctuation">,</span> x any<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    h<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token function">up</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> h<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Pop removes and returns the minimum element (according to Less) from the heap.</span>
+<span class="token comment">// The complexity is O(log n) where n = h.Len().</span>
+<span class="token comment">// Pop is equivalent to Remove(h, 0).</span>
+<span class="token keyword">func</span> <span class="token function">Pop</span><span class="token punctuation">(</span>h Interface<span class="token punctuation">)</span> any <span class="token punctuation">{</span>
+    n <span class="token operator">:=</span> h<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>
+    h<span class="token punctuation">.</span><span class="token function">Swap</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+    <span class="token function">down</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> h<span class="token punctuation">.</span><span class="token function">Pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Remove removes and returns the element at index i from the heap.</span>
+<span class="token comment">// The complexity is O(log n) where n = h.Len().</span>
+<span class="token keyword">func</span> <span class="token function">Remove</span><span class="token punctuation">(</span>h Interface<span class="token punctuation">,</span> i <span class="token builtin">int</span><span class="token punctuation">)</span> any <span class="token punctuation">{</span>
+    n <span class="token operator">:=</span> h<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span>
+    <span class="token keyword">if</span> n <span class="token operator">!=</span> i <span class="token punctuation">{</span>
+        h<span class="token punctuation">.</span><span class="token function">Swap</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token operator">!</span><span class="token function">down</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> i<span class="token punctuation">,</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">up</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> h<span class="token punctuation">.</span><span class="token function">Pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Fix re-establishes the heap ordering after the element at index i has changed its value.</span>
+<span class="token comment">// Changing the value of the element at index i and then calling Fix is equivalent to,</span>
+<span class="token comment">// but less expensive than, calling Remove(h, i) followed by a Push of the new value.</span>
+<span class="token comment">// The complexity is O(log n) where n = h.Len().</span>
+<span class="token keyword">func</span> <span class="token function">Fix</span><span class="token punctuation">(</span>h Interface<span class="token punctuation">,</span> i <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span><span class="token function">down</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> i<span class="token punctuation">,</span> h<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">up</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">up</span><span class="token punctuation">(</span>h Interface<span class="token punctuation">,</span> j <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">{</span>
+        i <span class="token operator">:=</span> <span class="token punctuation">(</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span> <span class="token comment">// parent</span>
+        <span class="token keyword">if</span> i <span class="token operator">==</span> j <span class="token operator">||</span> <span class="token operator">!</span>h<span class="token punctuation">.</span><span class="token function">Less</span><span class="token punctuation">(</span>j<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        h<span class="token punctuation">.</span><span class="token function">Swap</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span>
+        j <span class="token operator">=</span> i
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">down</span><span class="token punctuation">(</span>h Interface<span class="token punctuation">,</span> i0<span class="token punctuation">,</span> n <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+    i <span class="token operator">:=</span> i0
+    <span class="token keyword">for</span> <span class="token punctuation">{</span>
+        j1 <span class="token operator">:=</span> <span class="token number">2</span><span class="token operator">*</span>i <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> j1 <span class="token operator">&gt;=</span> n <span class="token operator">||</span> j1 <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">{</span> <span class="token comment">// j1 &lt; 0 after int overflow</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        j <span class="token operator">:=</span> j1 <span class="token comment">// left child</span>
+        <span class="token keyword">if</span> j2 <span class="token operator">:=</span> j1 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j2 <span class="token operator">&lt;</span> n <span class="token operator">&amp;&amp;</span> h<span class="token punctuation">.</span><span class="token function">Less</span><span class="token punctuation">(</span>j2<span class="token punctuation">,</span> j1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            j <span class="token operator">=</span> j2 <span class="token comment">// = 2*i + 2  // right child</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token operator">!</span>h<span class="token punctuation">.</span><span class="token function">Less</span><span class="token punctuation">(</span>j<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        h<span class="token punctuation">.</span><span class="token function">Swap</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span>
+        i <span class="token operator">=</span> j
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> i <span class="token operator">&gt;</span> i0
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="demo"><a href="#demo" class="header-anchor">#</a> Demo</h2> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;container/heap&quot;</span>
+    <span class="token string">&quot;fmt&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    h <span class="token operator">:=</span> <span class="token operator">&amp;</span>IHeap<span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token comment">// *h = append(*h, [2]int{1, 2})</span>
+    <span class="token comment">// *h = append(*h, [2]int{3, 7})</span>
+    <span class="token comment">// *h = append(*h, [2]int{5, 0})</span>
+    <span class="token comment">// *h = append(*h, [2]int{2, 3})</span>
+    <span class="token comment">// *h = append(*h, [2]int{0, 8})</span>
+    heap<span class="token punctuation">.</span><span class="token function">Init</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+
+    heap<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    heap<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    heap<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    heap<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    heap<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// heap.Pop(h)</span>
+    
+    <span class="token comment">// (*h)[0] = [2]int{3, 5} </span>
+    <span class="token comment">// heap.Fix(h, 0)</span>
+    
+    <span class="token comment">// heap.Remove(h, 0)</span>
+
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token operator">*</span>h<span class="token punctuation">)</span>
+
+    <span class="token keyword">for</span> h<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>heap<span class="token punctuation">.</span><span class="token function">Pop</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">//构建小顶堆</span>
+<span class="token keyword">type</span> IHeap <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h IHeap<span class="token punctuation">)</span> <span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">len</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h IHeap<span class="token punctuation">)</span> <span class="token function">Less</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> h<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> h<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h IHeap<span class="token punctuation">)</span> <span class="token function">Swap</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    h<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> h<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> h<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> h<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h <span class="token operator">*</span>IHeap<span class="token punctuation">)</span> <span class="token function">Push</span><span class="token punctuation">(</span>x <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">*</span>h <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token operator">*</span>h<span class="token punctuation">,</span> x<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h <span class="token operator">*</span>IHeap<span class="token punctuation">)</span> <span class="token function">Pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">{</span>
+    old <span class="token operator">:=</span> <span class="token operator">*</span>h
+    n <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span><span class="token operator">*</span>h<span class="token punctuation">)</span>
+    x <span class="token operator">:=</span> old<span class="token punctuation">[</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token operator">*</span>h <span class="token operator">=</span> old<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> x
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_347-前-k-个高频元素"><a href="#_347-前-k-个高频元素" class="header-anchor">#</a> <a href="https://leetcode.cn/problems/top-k-frequent-elements/" target="_blank" rel="noopener noreferrer">347. 前 K 个高频元素<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></h2> <p>Go 实现堆，需要实现 heap 中的接口。</p> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">topKFrequent</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> k <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token punctuation">{</span>
+    map_num <span class="token operator">:=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment">// 记录每个元素出现的次数</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span>item <span class="token operator">:=</span> <span class="token keyword">range</span> nums<span class="token punctuation">{</span>
+        map_num<span class="token punctuation">[</span>item<span class="token punctuation">]</span><span class="token operator">++</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 初始化堆</span>
+    h <span class="token operator">:=</span> <span class="token operator">&amp;</span>IHeap<span class="token punctuation">{</span><span class="token punctuation">}</span>
+    heap<span class="token punctuation">.</span><span class="token function">Init</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+
+    <span class="token comment">// 所有元素入堆，堆的长度为 k</span>
+    <span class="token keyword">for</span> key<span class="token punctuation">,</span> value <span class="token operator">:=</span> <span class="token keyword">range</span> map_num <span class="token punctuation">{</span>
+        heap<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span>key<span class="token punctuation">,</span> value<span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> h<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> k <span class="token punctuation">{</span>
+            <span class="token comment">// 弹出堆顶元素，即频次最小的元素</span>
+            heap<span class="token punctuation">.</span><span class="token function">Pop</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    res <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> k<span class="token punctuation">)</span>
+    
+    <span class="token comment">// 按顺序返回堆中的元素</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> k<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">{</span>
+        res<span class="token punctuation">[</span>k<span class="token operator">-</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> heap<span class="token punctuation">.</span><span class="token function">Pop</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> res
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 构建小顶堆（需要实现 heap 中的接口）</span>
+<span class="token keyword">type</span> IHeap <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h IHeap<span class="token punctuation">)</span> <span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">len</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h IHeap<span class="token punctuation">)</span> <span class="token function">Less</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 确定小根堆</span>
+    <span class="token keyword">return</span> h<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> h<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h IHeap<span class="token punctuation">)</span> <span class="token function">Swap</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    h<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> h<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> h<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> h<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h <span class="token operator">*</span>IHeap<span class="token punctuation">)</span> <span class="token function">Push</span><span class="token punctuation">(</span>x <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token operator">*</span>h <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token operator">*</span>h<span class="token punctuation">,</span> x<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>h <span class="token operator">*</span>IHeap<span class="token punctuation">)</span> <span class="token function">Pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">{</span>
+    old <span class="token operator">:=</span> <span class="token operator">*</span>h
+    n<span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>old<span class="token punctuation">)</span>
+    x<span class="token operator">:=</span> old<span class="token punctuation">[</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token operator">*</span>h <span class="token operator">=</span> old<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> x
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="堆排序"><a href="#堆排序" class="header-anchor">#</a> 堆排序</h2> <p>主要思路（升序排列）：</p> <ol><li>建堆，从非叶子节点开始依次堆化，注意逆序，从下往上堆化 建堆流程：父节点与子节点比较，子节点大则交换父子节点，父节点索引更新为子节点，循环操作</li> <li>尾部遍历操作，弹出元素，再次堆化 弹出元素排序流程：从最后节点开始，交换头尾元素，由于弹出，end--，再次对剩余数组元素建堆，循环操作</li></ol> <p>最终数组元素呈现升序排列</p> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">sortArray</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token punctuation">{</span>
+    n <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">;</span> i <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span> <span class="token punctuation">{</span>
+        <span class="token function">heapify</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> i<span class="token punctuation">,</span> n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token punctuation">{</span>
+        <span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+        i<span class="token operator">--</span>
+        <span class="token function">heapify</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> nums
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">heapify</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> root <span class="token builtin">int</span><span class="token punctuation">,</span> end <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">{</span>
+        l <span class="token operator">:=</span> root <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> l <span class="token operator">&gt;</span> end <span class="token punctuation">{</span>
+            <span class="token keyword">return</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> l <span class="token operator">&lt;</span> end <span class="token operator">&amp;&amp;</span> nums<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> nums<span class="token punctuation">[</span>l<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+            l<span class="token operator">++</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> nums<span class="token punctuation">[</span>root<span class="token punctuation">]</span> <span class="token operator">&gt;</span> nums<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> root<span class="token punctuation">,</span> l<span class="token punctuation">)</span>
+
+        root <span class="token operator">=</span> l
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">swap</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> i <span class="token builtin">int</span><span class="token punctuation">,</span> j <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>实现升序排序，则需要构建大根堆，然后逐步将较大值放在数组后面，每一次 down 都能得到一个最大值，最终实现升序。</p> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">sortArray</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token punctuation">{</span>
+    n <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span>
+    <span class="token comment">// 堆化（大根堆，第一个元素为最大）</span>
+    <span class="token function">heapify</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&gt;=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">{</span>
+        <span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+        i<span class="token operator">--</span>
+        <span class="token function">down</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> nums
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">heapify</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> n <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> n<span class="token operator">/</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span> <span class="token punctuation">{</span>
+        <span class="token function">down</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> i<span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">down</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> i0<span class="token punctuation">,</span> n <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    i <span class="token operator">:=</span> i0
+    <span class="token keyword">for</span> <span class="token punctuation">{</span>
+        j1 <span class="token operator">:=</span> <span class="token number">2</span><span class="token operator">*</span>i <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> j1 <span class="token operator">&gt;=</span> n <span class="token operator">||</span> j1 <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">{</span> <span class="token comment">// j1 &lt; 0 after int overflow</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        j <span class="token operator">:=</span> j1 <span class="token comment">// left child</span>
+        <span class="token keyword">if</span> j2 <span class="token operator">:=</span> j1 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j2 <span class="token operator">&lt;</span> n <span class="token operator">&amp;&amp;</span> nums<span class="token punctuation">[</span>j2<span class="token punctuation">]</span> <span class="token operator">&gt;</span> nums<span class="token punctuation">[</span>j1<span class="token punctuation">]</span> <span class="token punctuation">{</span>
+            j <span class="token operator">=</span> j2 <span class="token comment">// = 2*i + 2  // right child</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token punctuation">{</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> i<span class="token punctuation">,</span> j<span class="token punctuation">)</span>
+        i <span class="token operator">=</span> j
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">swap</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> i <span class="token builtin">int</span><span class="token punctuation">,</span> j <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#简介" title="简介">简介</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#源码" title="源码">源码</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#demo" title="Demo">Demo</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#_347-前-k-个高频元素" title="347. 前 K 个高频元素">347. 前 K 个高频元素</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#堆排序" title="堆排序">堆排序</a></div></div></div></div> <footer class="footer" data-v-3d9deeb8><div class="footer-left-wrap" data-v-3d9deeb8><ul class="contact" data-v-3d9deeb8><li class="contact-item" data-v-3d9deeb8><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-3d9deeb8><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-3d9deeb8></path></svg>
+          
+        </a></li><li class="contact-item" data-v-3d9deeb8><a href="mailto:jianping756@gmail.com" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail" data-v-3d9deeb8><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" data-v-3d9deeb8></path><polyline points="22,6 12,13 2,6" data-v-3d9deeb8></polyline></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-3d9deeb8><ul class="copyright" data-v-3d9deeb8><li class="copyright-item" data-v-3d9deeb8>jianping5 © 2023</li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.5f1c1608.js" defer></script><script src="/assets/js/7.095168a6.js" defer></script><script src="/assets/js/3.5695e672.js" defer></script><script src="/assets/js/22.42c8ece6.js" defer></script>
+  </body>
+</html>
