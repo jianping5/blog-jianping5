@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>sync.Map | Jianping5</title>
+    <meta name="generator" content="VuePress 1.9.9">
+    <link rel="icon" href="favicon.jpg">
+    <meta name="description" content="https://cs.opensource.google/go/go/+/refs/tags/go1.20.6:src/sync/map.go
+
+type Map struct {
+        mu Mutex
+
+        // read contains the portion of the map&#39;s contents that are safe for
+ ...">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.1d43d066.css" as="style"><link rel="preload" href="/assets/js/app.dedcbd64.js" as="script"><link rel="preload" href="/assets/js/7.46feb9c9.js" as="script"><link rel="preload" href="/assets/js/3.260c5242.js" as="script"><link rel="preload" href="/assets/js/9.e308b6f3.js" as="script"><link rel="prefetch" href="/assets/js/10.1043b50d.js"><link rel="prefetch" href="/assets/js/11.7e81a20d.js"><link rel="prefetch" href="/assets/js/12.dcce51f3.js"><link rel="prefetch" href="/assets/js/13.15844d91.js"><link rel="prefetch" href="/assets/js/14.34763e3f.js"><link rel="prefetch" href="/assets/js/15.f93e8f42.js"><link rel="prefetch" href="/assets/js/16.cbc88fd3.js"><link rel="prefetch" href="/assets/js/17.3b82dd97.js"><link rel="prefetch" href="/assets/js/18.0f20f1d7.js"><link rel="prefetch" href="/assets/js/19.cf564c57.js"><link rel="prefetch" href="/assets/js/20.39afcc67.js"><link rel="prefetch" href="/assets/js/21.72e5e426.js"><link rel="prefetch" href="/assets/js/22.eedae219.js"><link rel="prefetch" href="/assets/js/23.607d9870.js"><link rel="prefetch" href="/assets/js/4.3c197d26.js"><link rel="prefetch" href="/assets/js/5.36162a2a.js"><link rel="prefetch" href="/assets/js/6.a738bc2a.js"><link rel="prefetch" href="/assets/js/8.9f1a5e77.js"><link rel="prefetch" href="/assets/js/vuejs-paginate.3c955fbe.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.1d43d066.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/" class="nav-link home-link">Jianping5 </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/post/" class="nav-link router-link-active">Blog</a></li><li class="nav-item"><a href="/about/" class="nav-link">About</a></li><li class="nav-item"><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external">Github</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/" class="nav-link mobile-home-link">Jianping5 </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/post/" class="nav-link router-link-active">Blog</a></li><li class="mobile-nav-item"><a href="/about/" class="nav-link">About</a></li><li class="mobile-nav-item"><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external">Github</a></li> <li class="mobile-nav-item"><!----></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        sync.Map
+      </h1> <div class="post-meta"><div itemprop="publisher author" itemtype="http://schema.org/Person" itemscope="itemscope" class="post-meta-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-navigation"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <span itemprop="name">jianping5</span> <span itemprop="address">   in ShangHai</span></div> <div class="post-meta-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <time pubdate itemprop="datePublished" datetime="2023-07-22T00:00:00.000Z">
+      Sat Jul 22 2023
+    </time></div> <!----></div></header> <div itemprop="articleBody" class="content__default"><blockquote><p>https://cs.opensource.google/go/go/+/refs/tags/go1.20.6:src/sync/map.go</p></blockquote> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token keyword">type</span> Map <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+        mu Mutex
+
+        <span class="token comment">// read contains the portion of the map's contents that are safe for</span>
+        <span class="token comment">// concurrent access (with or without mu held).</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// The read field itself is always safe to load, but must only be stored with</span>
+        <span class="token comment">// mu held.</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// Entries stored in read may be updated concurrently without mu, but updating</span>
+        <span class="token comment">// a previously-expunged entry requires that the entry be copied to the dirty</span>
+        <span class="token comment">// map and unexpunged with mu held.</span>
+        read atomic<span class="token punctuation">.</span>Pointer<span class="token punctuation">[</span>readOnly<span class="token punctuation">]</span>
+
+        <span class="token comment">// dirty contains the portion of the map's contents that require mu to be</span>
+        <span class="token comment">// held. To ensure that the dirty map can be promoted to the read map quickly,</span>
+        <span class="token comment">// it also includes all of the non-expunged entries in the read map.</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// Expunged entries are not stored in the dirty map. An expunged entry in the</span>
+        <span class="token comment">// clean map must be unexpunged and added to the dirty map before a new value</span>
+        <span class="token comment">// can be stored to it.</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// If the dirty map is nil, the next write to the map will initialize it by</span>
+        <span class="token comment">// making a shallow copy of the clean map, omitting stale entries.</span>
+        dirty <span class="token keyword">map</span><span class="token punctuation">[</span>any<span class="token punctuation">]</span><span class="token operator">*</span>entry
+
+        <span class="token comment">// misses counts the number of loads since the read map was last updated that</span>
+        <span class="token comment">// needed to lock mu to determine whether the key was present.</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// Once enough misses have occurred to cover the cost of copying the dirty</span>
+        <span class="token comment">// map, the dirty map will be promoted to the read map (in the unamended</span>
+        <span class="token comment">// state) and the next store to the map will make a new dirty copy.</span>
+        misses <span class="token builtin">int</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// readOnly is an immutable struct stored atomically in the Map.read field.</span>
+<span class="token keyword">type</span> readOnly <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+        m       <span class="token keyword">map</span><span class="token punctuation">[</span>any<span class="token punctuation">]</span><span class="token operator">*</span>entry
+        amended <span class="token builtin">bool</span> <span class="token comment">// true if the dirty map contains some key not in m.</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// expunged is an arbitrary pointer that marks entries which have been deleted</span>
+<span class="token comment">// from the dirty map.</span>
+<span class="token keyword">var</span> expunged <span class="token operator">=</span> <span class="token function">new</span><span class="token punctuation">(</span>any<span class="token punctuation">)</span>
+
+<span class="token comment">// An entry is a slot in the map corresponding to a particular key.</span>
+<span class="token keyword">type</span> entry <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+        <span class="token comment">// p points to the interface{} value stored for the entry.</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// If p == nil, the entry has been deleted, and either m.dirty == nil or</span>
+        <span class="token comment">// m.dirty[key] is e.</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// If p == expunged, the entry has been deleted, m.dirty != nil, and the entry</span>
+        <span class="token comment">// is missing from m.dirty.</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// Otherwise, the entry is valid and recorded in m.read.m[key] and, if m.dirty</span>
+        <span class="token comment">// != nil, in m.dirty[key].</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// An entry can be deleted by atomic replacement with nil: when m.dirty is</span>
+        <span class="token comment">// next created, it will atomically replace nil with expunged and leave</span>
+        <span class="token comment">// m.dirty[key] unset.</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// An entry's associated value can be updated by atomic replacement, provided</span>
+        <span class="token comment">// p != expunged. If p == expunged, an entry's associated value can be updated</span>
+        <span class="token comment">// only after first setting m.dirty[key] = e so that lookups using the dirty</span>
+        <span class="token comment">// map find the entry.</span>
+        p atomic<span class="token punctuation">.</span>Pointer<span class="token punctuation">[</span>any<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="load-查询"><a href="#load-查询" class="header-anchor">#</a> Load：查询</h2> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token comment">// Load returns the value stored in the map for a key, or nil if no</span>
+<span class="token comment">// value is present.</span>
+<span class="token comment">// The ok result indicates whether value was found in the map.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">Load</span><span class="token punctuation">(</span>key any<span class="token punctuation">)</span> <span class="token punctuation">(</span>value any<span class="token punctuation">,</span> ok <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        read <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> read<span class="token punctuation">.</span>m<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+        <span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token operator">&amp;&amp;</span> read<span class="token punctuation">.</span>amended <span class="token punctuation">{</span>
+                m<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token comment">// Avoid reporting a spurious miss if m.dirty got promoted while we were</span>
+                <span class="token comment">// blocked on m.mu. (If further loads of the same key will not miss, it's</span>
+                <span class="token comment">// not worth copying the dirty map for this key.)</span>
+                read <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                e<span class="token punctuation">,</span> ok <span class="token operator">=</span> read<span class="token punctuation">.</span>m<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+                <span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token operator">&amp;&amp;</span> read<span class="token punctuation">.</span>amended <span class="token punctuation">{</span>
+                        e<span class="token punctuation">,</span> ok <span class="token operator">=</span> m<span class="token punctuation">.</span>dirty<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+                        <span class="token comment">// Regardless of whether the entry was present, record a miss: this key</span>
+                        <span class="token comment">// will take the slow path until the dirty map is promoted to the read</span>
+                        <span class="token comment">// map.</span>
+                        m<span class="token punctuation">.</span><span class="token function">missLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">}</span>
+                m<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> e<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span> readOnly <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> p <span class="token operator">:=</span> m<span class="token punctuation">.</span>read<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> p <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token operator">*</span>p
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> readOnly<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">missLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span>misses<span class="token operator">++</span>
+        <span class="token keyword">if</span> m<span class="token punctuation">.</span>misses <span class="token operator">&lt;</span> <span class="token function">len</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>dirty<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span>
+        <span class="token punctuation">}</span>
+        m<span class="token punctuation">.</span>read<span class="token punctuation">.</span><span class="token function">Store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>readOnly<span class="token punctuation">{</span>m<span class="token punctuation">:</span> m<span class="token punctuation">.</span>dirty<span class="token punctuation">}</span><span class="token punctuation">)</span>
+        m<span class="token punctuation">.</span>dirty <span class="token operator">=</span> <span class="token boolean">nil</span>
+        m<span class="token punctuation">.</span>misses <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Load 流程：</p> <ol><li>读取时先从 read 中读取，若不存在且 amended 为 true 时，则加锁，再次读取 read。</li></ol> <blockquote><p>为什么要再次读取 read 呢？因为前面的判断不是原子操作，可能当时 dirty 正在晋升为 read，避免虚假的 miss，所以需要加锁再次读取 read。也是为了避免不值得的 dirty 拷贝，提高效率</p></blockquote> <ol><li>若再次读取也不存在且 amended 为 true，则从 dirty 中获取。</li> <li>无论 dirty 中是否存在，都需要记录这个 miss，增加 misses 字段，若长度大于等于 dirty 的长度，则将 dirty 赋值给 read，并将 dirty 和 missed 置空</li></ol> <p><img src="/assets/img/1.693f2e15.png" alt="1.png"></p> <h2 id="store-新增-修改"><a href="#store-新增-修改" class="header-anchor">#</a> Store：新增/修改</h2> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token comment">// Store sets the value for a key.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">Store</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value any<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token boolean">_</span><span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">Swap</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Swap swaps the value for a key and returns the previous value if any.</span>
+<span class="token comment">// The loaded result reports whether the key was present.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">Swap</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value any<span class="token punctuation">)</span> <span class="token punctuation">(</span>previous any<span class="token punctuation">,</span> loaded <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        read <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> read<span class="token punctuation">.</span>m<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> v<span class="token punctuation">,</span> ok <span class="token operator">:=</span> e<span class="token punctuation">.</span><span class="token function">trySwap</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+                        <span class="token keyword">if</span> v <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                                <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+                        <span class="token punctuation">}</span>
+                        <span class="token keyword">return</span> <span class="token operator">*</span>v<span class="token punctuation">,</span> <span class="token boolean">true</span>
+                <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        m<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        read <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> read<span class="token punctuation">.</span>m<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> e<span class="token punctuation">.</span><span class="token function">unexpungeLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token comment">// The entry was previously expunged, which implies that there is a</span>
+                        <span class="token comment">// non-nil dirty map and this entry is not in it.</span>
+                        m<span class="token punctuation">.</span>dirty<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> e
+                <span class="token punctuation">}</span>
+                <span class="token keyword">if</span> v <span class="token operator">:=</span> e<span class="token punctuation">.</span><span class="token function">swapLocked</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> v <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                        loaded <span class="token operator">=</span> <span class="token boolean">true</span>
+                        previous <span class="token operator">=</span> <span class="token operator">*</span>v
+                <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> m<span class="token punctuation">.</span>dirty<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> v <span class="token operator">:=</span> e<span class="token punctuation">.</span><span class="token function">swapLocked</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> v <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                        loaded <span class="token operator">=</span> <span class="token boolean">true</span>
+                        previous <span class="token operator">=</span> <span class="token operator">*</span>v
+                <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token operator">!</span>read<span class="token punctuation">.</span>amended <span class="token punctuation">{</span>
+                        <span class="token comment">// We're adding the first new key to the dirty map.</span>
+                        <span class="token comment">// Make sure it is allocated and mark the read-only map as incomplete.</span>
+                        m<span class="token punctuation">.</span><span class="token function">dirtyLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                        m<span class="token punctuation">.</span>read<span class="token punctuation">.</span><span class="token function">Store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>readOnly<span class="token punctuation">{</span>m<span class="token punctuation">:</span> read<span class="token punctuation">.</span>m<span class="token punctuation">,</span> amended<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+                <span class="token punctuation">}</span>
+                m<span class="token punctuation">.</span>dirty<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">newEntry</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        m<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> previous<span class="token punctuation">,</span> loaded
+<span class="token punctuation">}</span>
+
+<span class="token comment">// trySwap swaps a value if the entry has not been expunged.</span>
+<span class="token comment">//</span>
+<span class="token comment">// If the entry is expunged, trySwap returns false and leaves the entry</span>
+<span class="token comment">// unchanged.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>entry<span class="token punctuation">)</span> <span class="token function">trySwap</span><span class="token punctuation">(</span>i <span class="token operator">*</span>any<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>any<span class="token punctuation">,</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">{</span>
+                p <span class="token operator">:=</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token keyword">if</span> p <span class="token operator">==</span> expunged <span class="token punctuation">{</span>
+                        <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">if</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">CompareAndSwap</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">return</span> p<span class="token punctuation">,</span> <span class="token boolean">true</span>
+                <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// CompareAndSwap swaps the old and new values for key</span>
+<span class="token comment">// if the value stored in the map is equal to old.</span>
+<span class="token comment">// The old value must be of a comparable type.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">CompareAndSwap</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> old<span class="token punctuation">,</span> <span class="token builtin">new</span> any<span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+        read <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> read<span class="token punctuation">.</span>m<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> e<span class="token punctuation">.</span><span class="token function">tryCompareAndSwap</span><span class="token punctuation">(</span>old<span class="token punctuation">,</span> <span class="token builtin">new</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token operator">!</span>read<span class="token punctuation">.</span>amended <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token boolean">false</span> <span class="token comment">// No existing value for key.</span>
+        <span class="token punctuation">}</span>
+
+        m<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">defer</span> m<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        read <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        swapped <span class="token operator">:=</span> <span class="token boolean">false</span>
+        <span class="token keyword">if</span> e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> read<span class="token punctuation">.</span>m<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+                swapped <span class="token operator">=</span> e<span class="token punctuation">.</span><span class="token function">tryCompareAndSwap</span><span class="token punctuation">(</span>old<span class="token punctuation">,</span> <span class="token builtin">new</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> m<span class="token punctuation">.</span>dirty<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+                swapped <span class="token operator">=</span> e<span class="token punctuation">.</span><span class="token function">tryCompareAndSwap</span><span class="token punctuation">(</span>old<span class="token punctuation">,</span> <span class="token builtin">new</span><span class="token punctuation">)</span>
+                <span class="token comment">// We needed to lock mu in order to load the entry for key,</span>
+                <span class="token comment">// and the operation didn't change the set of keys in the map</span>
+                <span class="token comment">// (so it would be made more efficient by promoting the dirty</span>
+                <span class="token comment">// map to read-only).</span>
+                <span class="token comment">// Count it as a miss so that we will eventually switch to the</span>
+                <span class="token comment">// more efficient steady state.</span>
+                m<span class="token punctuation">.</span><span class="token function">missLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> swapped
+<span class="token punctuation">}</span>
+
+<span class="token comment">// tryCompareAndSwap compare the entry with the given old value and swaps</span>
+<span class="token comment">// it with a new value if the entry is equal to the old value, and the entry</span>
+<span class="token comment">// has not been expunged.</span>
+<span class="token comment">//</span>
+<span class="token comment">// If the entry is expunged, tryCompareAndSwap returns false and leaves</span>
+<span class="token comment">// the entry unchanged.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>entry<span class="token punctuation">)</span> <span class="token function">tryCompareAndSwap</span><span class="token punctuation">(</span>old<span class="token punctuation">,</span> <span class="token builtin">new</span> any<span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+        p <span class="token operator">:=</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> p <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token operator">||</span> p <span class="token operator">==</span> expunged <span class="token operator">||</span> <span class="token operator">*</span>p <span class="token operator">!=</span> old <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// Copy the interface after the first load to make this method more amenable</span>
+        <span class="token comment">// to escape analysis: if the comparison fails from the start, we shouldn't</span>
+        <span class="token comment">// bother heap-allocating an interface value to store.</span>
+        nc <span class="token operator">:=</span> <span class="token builtin">new</span>
+        <span class="token keyword">for</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">CompareAndSwap</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token operator">&amp;</span>nc<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">return</span> <span class="token boolean">true</span>
+                <span class="token punctuation">}</span>
+                p <span class="token operator">=</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token keyword">if</span> p <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token operator">||</span> p <span class="token operator">==</span> expunged <span class="token operator">||</span> <span class="token operator">*</span>p <span class="token operator">!=</span> old <span class="token punctuation">{</span>
+                        <span class="token keyword">return</span> <span class="token boolean">false</span>
+                <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// unexpungeLocked ensures that the entry is not marked as expunged.</span>
+<span class="token comment">//</span>
+<span class="token comment">// If the entry was previously expunged, it must be added to the dirty map</span>
+<span class="token comment">// before m.mu is unlocked.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>entry<span class="token punctuation">)</span> <span class="token function">unexpungeLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>wasExpunged <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">CompareAndSwap</span><span class="token punctuation">(</span>expunged<span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// swapLocked unconditionally swaps a value into the entry.</span>
+<span class="token comment">//</span>
+<span class="token comment">// The entry must be known not to be expunged.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>entry<span class="token punctuation">)</span> <span class="token function">swapLocked</span><span class="token punctuation">(</span>i <span class="token operator">*</span>any<span class="token punctuation">)</span> <span class="token operator">*</span>any <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">Swap</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 将 read 中未删除的数据加入到 dirty 中</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">dirtyLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> m<span class="token punctuation">.</span>dirty <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span>
+        <span class="token punctuation">}</span>
+
+        read <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        m<span class="token punctuation">.</span>dirty <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span>any<span class="token punctuation">]</span><span class="token operator">*</span>entry<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>read<span class="token punctuation">.</span>m<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        
+        <span class="token comment">// 遍历 read</span>
+        <span class="token keyword">for</span> k<span class="token punctuation">,</span> e <span class="token operator">:=</span> <span class="token keyword">range</span> read<span class="token punctuation">.</span>m <span class="token punctuation">{</span>
+                <span class="token comment">// 通过此次操作，dirty 中的元素都是未被删除的，可见标记为 expunged 的元素不在 dirty 中！！！</span>
+                <span class="token keyword">if</span> <span class="token operator">!</span>e<span class="token punctuation">.</span><span class="token function">tryExpungeLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        m<span class="token punctuation">.</span>dirty<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> e
+                <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 判断 entry 是否被标记删除，并且将标记为 nil 的 entry 更新标记为 expunged</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>entry<span class="token punctuation">)</span> <span class="token function">tryExpungeLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>isExpunged <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        p <span class="token operator">:=</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> p <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">CompareAndSwap</span><span class="token punctuation">(</span><span class="token boolean">nil</span><span class="token punctuation">,</span> expunged<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">return</span> <span class="token boolean">true</span>
+                <span class="token punctuation">}</span>
+                p <span class="token operator">=</span> e<span class="token punctuation">.</span>p<span class="token punctuation">.</span><span class="token function">Load</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> p <span class="token operator">==</span> expunged
+<span class="token punctuation">}</span>
+</code></pre></div><p>Store 流程：</p> <ol><li>若 read 中存在该值，则尝试更新：若该值未被标记 expunged，则进行 CompareAndSwap</li> <li>若不存在，则加锁再次判断是否存在，若 read 中存在：
+<ol><li>则通过 e.unexpungeLocked() 判断其是否被标记为 expunged，若是，则将其添加到 dirty 中（因为它被标记为 expunged，说明在 dirty 中不存在）</li> <li>若不是，则再次进行 Swap()，尝试更新</li></ol></li> <li>若 read 中不存在，则判断 drity 中是否存在，若 drity 中存在：
+<ol><li>则再次进行 Swap()，尝试更新</li></ol></li> <li>若 drity 中也不存在：
+<ol><li>若 dirty 不包含 read 中不存在的 key，则触发一次 dirty 刷新，将 read 中未删除的数据加入到 dirty 中，（因为当 read 重置的时候，dirty 已经置为 nil 了）在这个过程中还将标记为 nil 的 entry 更新标记为 expunged</li> <li>若 dirty 中包含 read 中不存在的 key，则将新的键值对写入 dirty 中</li></ol></li></ol> <p><img src="/assets/img/2.224e45c9.png" alt="2.png"></p> <h2 id="delete-删除"><a href="#delete-删除" class="header-anchor">#</a> Delete：删除</h2> <div class="language-Go extra-class"><pre class="language-go"><code><span class="token comment">// Delete deletes the value for a key.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">Delete</span><span class="token punctuation">(</span>key any<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span><span class="token function">LoadAndDelete</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// LoadAndDelete deletes the value for a key, returning the previous value if any.</span>
+<span class="token comment">// The loaded result reports whether the key was present.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>Map<span class="token punctuation">)</span> <span class="token function">LoadAndDelete</span><span class="token punctuation">(</span>key any<span class="token punctuation">)</span> <span class="token punctuation">(</span>value any<span class="token punctuation">,</span> loaded <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        read <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> read<span class="token punctuation">.</span>m<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+        <span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token operator">&amp;&amp;</span> read<span class="token punctuation">.</span>amended <span class="token punctuation">{</span>
+                m<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                read <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">loadReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                e<span class="token punctuation">,</span> ok <span class="token operator">=</span> read<span class="token punctuation">.</span>m<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+                <span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token operator">&amp;&amp;</span> read<span class="token punctuation">.</span>amended <span class="token punctuation">{</span>
+                        e<span class="token punctuation">,</span> ok <span class="token operator">=</span> m<span class="token punctuation">.</span>dirty<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+                        <span class="token function">delete</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>dirty<span class="token punctuation">,</span> key<span class="token punctuation">)</span>
+                        <span class="token comment">// Regardless of whether the entry was present, record a miss: this key</span>
+                        <span class="token comment">// will take the slow path until the dirty map is promoted to the read</span>
+                        <span class="token comment">// map.</span>
+                        m<span class="token punctuation">.</span><span class="token function">missLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">}</span>
+                m<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> ok <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> e<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Delete 流程：</p> <ol><li>先判断 read 中是否存在，若不存在，则加锁再次判断</li> <li>再次判断还是不存在，则直接删除 dirty 中的，并记录 miss，进行 m.missLocked()</li> <li>若 misses 字段 大于等于 drity 的长度，则将 drity 赋值给 read，并将 dirty 和 misses 置空</li> <li>若 read 中存在该 key，将进行 e.delete()，通过延迟删除对 read 中的值域先进行标记：</li></ol> <p>将 read 中目标 key 对应的 value 值置为 nil（<code>e.delete()</code>→将<code>read=map[interface{}]*entry</code>中的值域*entry 置为 nil）</p> <p><img src="/assets/img/3.5f2a7b4d.png" alt="3.png"></p> <h2 id="总结"><a href="#总结" class="header-anchor">#</a> 总结</h2> <p>sync.Map 是通过冗余的两个数据结构(read、dirty)，实现性能的提升。</p> <ol><li>为了提升性能，load、delete、store 等操作尽量使用只读的 read；</li> <li>为了提高 read 的 key 击中概率，采用动态调整，将 dirty 数据提升为 read；</li> <li>对于数据的删除，采用延迟标记删除法，<em>只有在提升 dirty 的时候才删除</em>。</li></ol></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#load-查询" title="Load：查询">Load：查询</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#store-新增-修改" title="Store：新增/修改">Store：新增/修改</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#delete-删除" title="Delete：删除">Delete：删除</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#总结" title="总结">总结</a></div></div></div></div> <footer class="footer" data-v-3d9deeb8><div class="footer-left-wrap" data-v-3d9deeb8><ul class="contact" data-v-3d9deeb8><li class="contact-item" data-v-3d9deeb8><a href="https://github.com/jianping5" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-3d9deeb8><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-3d9deeb8></path></svg>
+          
+        </a></li><li class="contact-item" data-v-3d9deeb8><a href="mailto:jianping756@gmail.com" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail" data-v-3d9deeb8><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" data-v-3d9deeb8></path><polyline points="22,6 12,13 2,6" data-v-3d9deeb8></polyline></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-3d9deeb8><ul class="copyright" data-v-3d9deeb8><li class="copyright-item" data-v-3d9deeb8>jianping5 © 2023</li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.dedcbd64.js" defer></script><script src="/assets/js/7.46feb9c9.js" defer></script><script src="/assets/js/3.260c5242.js" defer></script><script src="/assets/js/9.e308b6f3.js" defer></script>
+  </body>
+</html>
